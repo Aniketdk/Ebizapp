@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-ebizapp-deployment
+  namespace: client02
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend-ebizapp
+  template:
+    metadata:
+      labels:
+        app: backend-ebizapp
+    spec:
+      containers:
+      - name: backend-ebizapp
+        image: sushantjadhav/ebizapi:latest
+        resources:
+          limits:
+            memory: 100Mi
+            cpu: 250m
+        ports:
+        - containerPort: 80
+        envFrom:
+         - configMapRef:
+              name: postgres-config
+        env:
+            - name: PRODUCTION
+              value: "True"
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: Rushi0321   
+            - name: POSTGRES_HOST
+              value: postgres.postgres
+            - name: POSTGRES_PORT
+              value: "5432"        
+            - name: POSTGRES_db
+              value: ros_gql_db
+      
+        volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgredb
+      volumes:
+        - name: postgredb
+          persistentVolumeClaim:
+            claimName: postgres-pv-claim1

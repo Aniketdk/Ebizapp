@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-api-deployment
+  namespace: client01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-api
+  template:
+    metadata:
+      labels:
+        app: app-api
+    spec:
+      containers:
+      - name: cli-rds-db
+        image: redis
+        resources:
+          limits:
+            memory: 100Mi
+            cpu: 250m
+        ports:
+        - containerPort: 80
+        env:
+        - name: PRODUCTION
+          value: "True"
+        - name: SQL_DB_HOST
+          value: localhost
+        - name: SQL_DB_PORT
+          value: "5432"
+        - name: SQL_DB_NAME
+          value: ros_dev_db
+        - name:  SQL_DB_USERNAME
+          value: postgres
+        - name:  SQL_DB_PASSWORD
+          value: Rushi0321
+        volumeMounts:
+        - name: redis-config-volume
+          mountPath: /usr/local/etc/redis/
+      volumes:
+      - name: redis-config-volume
+        configMap:
+          name: redis-config
+
+
+       

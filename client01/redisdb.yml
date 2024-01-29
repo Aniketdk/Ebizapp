@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client01-rdsdb
+  namespace: client01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cli-rds-db
+  template:
+    metadata:
+      labels:
+        app: cli-rds-db
+    spec:
+      containers:
+      - name: cli-rds-db
+        image: redis
+        resources:
+          limits:
+            memory: 100Mi
+            cpu: 10m
+        ports:
+        - containerPort: 8080
+        env:
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: redis-pass
+              key: password
+        volumeMounts:
+        - name: redis-config-volume
+          mountPath: /usr/local/etc/redis/
+      volumes:
+      - name: redis-config-volume
+        configMap:
+          name: redis-config
+
+
+
+       
+        

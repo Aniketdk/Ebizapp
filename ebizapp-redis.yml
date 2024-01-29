@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ebizapp-redis-deployment
+  namespace: client02
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ebizapp-redis
+  template:
+    metadata:
+      labels:
+        app: ebizapp-redis
+    spec:
+      containers:
+      - name: ebizapp-redis
+        image: sushantjadhav/ebizapp-redis:latest
+        resources:
+          limits:
+            memory: 100Mi
+            cpu: 10m
+        ports:
+        - containerPort: 6379
+        env:
+        - name: REDIS_DB
+          value: '1'
+        - name: SQL_DB_NAME
+          value: ros_gql_db
+        - name: REDIS_HOSTNAME
+          value: oregon-redis.render.com
+        - name: REDIS_USER_NAME
+          value: red-clg4o5l8td7s73bebit0
+        - name: REDIS_USER_PASS
+          value: BWwxHMEYroxbOzW7ZRXgI4lzKIMQ39pE
+        - name: OTP_SECRET_KEY
+          value: base32secret3232
+        - name: REDISSRCR
+          value: rediss://red-clg4o5l8td7s73bebit0:BWwxHMEYroxbOzW7ZRXgI4lzKIMQ39pE@oregon-redis.render.com:6379
+
+
+       
+        

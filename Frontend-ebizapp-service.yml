@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-ebizapp-service
+  namespace: client02
+  labels: 
+     app: frontend-ebizapp
+spec:
+    type: ClusterIP
+    ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+    selector:
+      app: frontend-ebizapp
+  

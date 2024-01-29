@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-ebizapp-service
+  namespace:  client02
+spec:
+  selector:
+    app: backend-ebizapp
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

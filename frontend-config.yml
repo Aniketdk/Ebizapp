@@ -1,0 +1,26 @@
+# nginx-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-config-config
+data:
+  frontend-config-config.conf: |
+   
+    upstream ebizapp-redis {
+      server redis-service;
+    }
+    server {
+      listen 6379;
+      location localhost {
+        proxy_pass http://redis-service;
+      }
+    }
+    upstream postgres-deployment {
+      server postgres-service;
+    }
+    server {
+      listen 5432;
+      location localhost {
+        proxy_pass http://postgres-service;
+      }
+    }
